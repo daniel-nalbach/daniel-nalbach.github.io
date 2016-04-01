@@ -1,0 +1,28 @@
+body {
+  font-family: 'Arial';
+  margin: 0;
+  padding: 0;
+}
+
+.header {
+  background-color: #7CD0F7;
+  padding: 20px;
+  text-align: center;
+  width: 100%;
+}
+
+.header h1 {
+  color: #fff;
+  margin: auto;
+}
+
+
+.main {
+  text-align: center;
+  width: 100%;
+}
+
+.main textarea {
+  height: 400px;
+  width: 500px;
+}

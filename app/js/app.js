@@ -13,8 +13,11 @@ angular.module('challenge.controllers', [
 ])
   .controller('MainController', ['$scope', function ($scope) {
 
+    $scope.syntaxTree = null;
+
     $scope.$watch('userCode', function (newValue) {
       // console.log('userCode', newValue);
+      $scope.syntaxTree = esprima.parse(newValue);
     });
-    
+
   }]);

@@ -12,10 +12,9 @@ angular.module('challenge.controllers', [
 
 ])
   .controller('MainController', ['$scope', function ($scope) {
-    console.log('$scope.$id', $scope.$id);
-    $scope.userCode = "Test";
 
     $scope.$watch('userCode', function (newValue) {
-      console.log('userCode', newValue);
+      // console.log('userCode', newValue);
     });
+    
   }]);

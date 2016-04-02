@@ -17,6 +17,8 @@ angular.module('challenge.controllers', [
 
     $scope.syntaxTree = null;
     $scope.errors = null;
+    $scope.functions = null;
+    $scope.ifStatements = null;
 
     function tryParsing (text) {
       $scope.errors = null;
@@ -37,8 +39,10 @@ angular.module('challenge.controllers', [
       if (newValue) {
         var flatTree = _.flatMapDeep($scope.syntaxTree.body);
         $scope.functions = _.filter(flatTree, { type: "FunctionDeclaration" });
+        $scope.ifStatements = _.filter(flatTree, { type: "IfStatement" });
       } else {
         $scope.functions = null;
+        $scope.ifStatements = null;
       }
     });
   }]);

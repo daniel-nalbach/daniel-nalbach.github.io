@@ -16,16 +16,29 @@ angular.module('challenge.controllers', [
   .controller('MainController', ['$scope', function ($scope) {
 
     $scope.syntaxTree = null;
+    $scope.errors = null;
+
+    function tryParsing (text) {
+      $scope.errors = null;
+      try {
+        return esprima.parse(text, { tolerant: true });
+      } catch (e) {
+        $scope.errors = e.description;
+        // console.log(e);
+      }
+    };
 
     $scope.$watch('userCode', function (newValue) {
       // console.log('userCode', newValue);
-      $scope.syntaxTree = esprima.parse(newValue, { tolerant: true });
+      $scope.syntaxTree = tryParsing(newValue);
     });
 
     $scope.$watch('syntaxTree', function (newValue) {
       if (newValue) {
         var flatTree = _.flatMapDeep($scope.syntaxTree.body);
         $scope.functions = _.filter(flatTree, { type: "FunctionDeclaration" });
+      } else {
+        $scope.functions = null;
       }
     });
   }]);

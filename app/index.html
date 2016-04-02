@@ -19,8 +19,10 @@
   </div>
   <div class="main">
     <h3>Input Code</h3>
-    <textarea ng-model="userCode" ng-model-options="{debounce: 500}"></textarea>
+    <textarea ng-model="userCode" ng-model-options="{debounce: 2000}"></textarea>
     <div class="feedback">
+      <div ng-show="errors" class="errors">{{errors}}</div>
+      <br>
       <h3>Function List</h3>
       <div class="function" ng-repeat="function in functions">
         <span>function </span>

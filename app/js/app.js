@@ -19,6 +19,22 @@ angular.module('challenge.controllers', [
     $scope.errors = null;
     $scope.functions = null;
     $scope.ifStatements = null;
+    $scope.blacklist = [];
+    $scope.blacklistMessages = [];
+
+    function checkForDisallowed (syntaxTree, blacklist, messages) {
+      var flatTree = _.flatMapDeep(syntaxTree);
+      _.each(blacklist, function (disallowed) {
+        var results = _.filter(flatTree, { type: disallowed });
+        var alreadyHasMessage = _.filter(messages, { type: disallowed }).length > 0;
+        if (results.length > 0 && !alreadyHasMessage) {
+          messages.push({ type: disallowed, text: "This exercise requires that you do not use " + disallowed });
+        } else if  (!results.length && alreadyHasMessage) {
+          messages = _.reject(messages, { type: disallowed });
+        }
+      });
+      return messages;
+    };
 
     function tryParsing (text) {
       $scope.errors = null;
@@ -33,16 +49,16 @@ angular.module('challenge.controllers', [
     $scope.$watch('userCode', function (newValue) {
       // console.log('userCode', newValue);
       $scope.syntaxTree = tryParsing(newValue);
+      if ($scope.syntaxTree) {
+        $scope.blacklistMessages = checkForDisallowed($scope.syntaxTree, $scope.blacklist, $scope.blacklistMessages);
+      }
     });
 
-    $scope.$watch('syntaxTree', function (newValue) {
+    $scope.$watch('ifNotAllowed', function (newValue) {
       if (newValue) {
-        var flatTree = _.flatMapDeep($scope.syntaxTree.body);
-        $scope.functions = _.filter(flatTree, { type: "FunctionDeclaration" });
-        $scope.ifStatements = _.filter(flatTree, { type: "IfStatement" });
-      } else {
-        $scope.functions = null;
-        $scope.ifStatements = null;
+        $scope.blacklist.push('IfStatement');
+      } else if (!newValue && $scope.blacklist.length > 0){
+        $scope.blacklist = _.remove($scope.blacklist, "IfStatement");
       }
     });
   }]);

@@ -27,6 +27,7 @@
     <textarea ng-model="userCode" ng-model-options="{debounce: 2000}"></textarea>
     <div class="feedback">
       <div ng-show="errors" class="errors">{{errors}}</div>
+      <div ng-show="blacklistMessages.length > 0" class="blacklist-error" ng-repeat="message in blacklistMessages">{{message.text}}</div>
       <br>
       <div ng-show="functions.length > 0">
         <div class="codeObject" ng-repeat="function in functions">

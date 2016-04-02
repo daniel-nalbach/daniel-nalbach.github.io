@@ -33,7 +33,7 @@ body {
   margin-bottom: 20px;
 }
 
-.feedback .codeObject {
+.feedback .codeObject, .blacklist-error {
   border-radius: 10px;
   color: white;
   display: inline-block;
@@ -57,4 +57,8 @@ body {
 
 .feedback .validObject .name {
   color: green;
+}
+
+.blacklist-error {
+  background-color: red;
 }

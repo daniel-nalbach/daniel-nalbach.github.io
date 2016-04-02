@@ -33,13 +33,20 @@ body {
   margin-bottom: 20px;
 }
 
-.feedback .validObject {
+.feedback .codeObject {
   border-radius: 10px;
-  background-color: green;
   color: white;
   display: inline-block;
   padding: 5px 10px;
   margin: 10px;
+}
+
+.feedback .validObject {
+  background-color: green;
+}
+
+.feedback .invalidObject {
+  background-color: red;
 }
 
 .feedback .validObject .name {

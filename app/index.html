@@ -18,19 +18,24 @@
     <h1>Challenge App</h1>
   </div>
   <div class="main">
+    <div>
+      <h3>Settings</h3>
+      <input type="checkbox" value="false" ng-model="ifNotAllowed">
+      <label>If statements not allowed</label>
+    </div>
     <h3>Input Code</h3>
     <textarea ng-model="userCode" ng-model-options="{debounce: 2000}"></textarea>
     <div class="feedback">
       <div ng-show="errors" class="errors">{{errors}}</div>
       <br>
       <div ng-show="functions.length > 0">
-        <div class="validObject" ng-repeat="function in functions">
+        <div class="codeObject" ng-repeat="function in functions">
           <span>function </span>
           <span ng-if="function.id.name" class="name">{{function.id.name}}</span>
         </div>
       </div>
       <div ng-show="ifStatements.length > 0">
-        <div class="validObject" ng-repeat="statement in ifStatements">
+        <div class="codeObject" ng-class="{validObject: !ifNotAllowed, invalidObject: ifNotAllowed}" ng-repeat="statement in ifStatements">
           <span>if statement </span>
         </div>
       </div>

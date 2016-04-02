@@ -28,3 +28,25 @@ body {
   padding: 8px;
   width: 600px;
 }
+
+.feedback {
+  margin-bottom: 20px;
+}
+
+.feedback .function {
+  border-radius: 10px;
+  background-color: green;
+  color: white;
+  display: inline-block;
+  padding: 5px 10px;
+}
+
+.feedback .function .name {
+  background-color: white;
+  border-radius: 10px;
+  padding: 2px 8px;
+}
+
+.feedback .function .name {
+  color: green;
+}

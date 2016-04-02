@@ -8,6 +8,8 @@ angular.module('challenge', [
   // 'challenge.directives'
 ]);
 
+angular.module('challenge').constant('_', window._);
+
 angular.module('challenge.controllers', [
 
 ])
@@ -17,7 +19,13 @@ angular.module('challenge.controllers', [
 
     $scope.$watch('userCode', function (newValue) {
       // console.log('userCode', newValue);
-      $scope.syntaxTree = esprima.parse(newValue);
+      $scope.syntaxTree = esprima.parse(newValue, { tolerant: true });
     });
 
+    $scope.$watch('syntaxTree', function (newValue) {
+      if (newValue) {
+        var flatTree = _.flatMapDeep($scope.syntaxTree.body);
+        $scope.functions = _.filter(flatTree, { type: "FunctionDeclaration" });
+      }
+    });
   }]);

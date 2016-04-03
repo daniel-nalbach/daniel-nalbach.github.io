@@ -7,15 +7,19 @@ angular.module('challenge.services', [
   .service('MainService', function () {
     this.checkForDisallowed = function (syntaxTree, blacklist, messages) {
       var flatTree = _.flatMapDeep(syntaxTree);
-      _.each(blacklist, function (disallowed) {
-        var results = _.filter(flatTree, { type: disallowed });
-        var alreadyHasMessage = _.filter(messages, { type: disallowed }).length > 0;
-        if (results.length > 0 && !alreadyHasMessage) {
-          messages.push({ type: disallowed, text: "This exercise requires that you do not use " + disallowed });
-        } else if  (!results.length && alreadyHasMessage) {
-          messages = _.reject(messages, { type: disallowed });
-        }
-      });
+      if (blacklist.length && blacklist.length > 0) {
+        _.each(blacklist, function (disallowed) {
+          var results = _.filter(flatTree, { type: disallowed });
+          var alreadyHasMessage = _.filter(messages, { type: disallowed }).length > 0;
+          if (results.length > 0 && !alreadyHasMessage) {
+            messages.push({ type: disallowed, text: "This exercise requires that you do not use " + disallowed });
+          } else if  (!results.length && alreadyHasMessage) {
+            messages = _.reject(messages, { type: disallowed });
+          }
+        });
+      } else {
+        messages = [];
+      }
       return messages;
     };
 

@@ -3,7 +3,7 @@
 // Declare app level module which depends on views, and components
 angular.module('challenge', [
   'challenge.controllers',
-  // 'challenge.services',
+  'challenge.services',
   // 'challenge.config',
   // 'challenge.directives'
 ]);
@@ -11,9 +11,9 @@ angular.module('challenge', [
 angular.module('challenge').constant('_', window._);
 
 angular.module('challenge.controllers', [
-
+  'challenge.services'
 ])
-  .controller('MainController', ['$scope', function ($scope) {
+  .controller('MainController', ['$scope', 'MainService', function ($scope, MainService) {
 
     $scope.syntaxTree = null;
     $scope.errors = null;
@@ -22,7 +22,34 @@ angular.module('challenge.controllers', [
     $scope.blacklist = [];
     $scope.blacklistMessages = [];
 
-    function checkForDisallowed (syntaxTree, blacklist, messages) {
+    $scope.$watch('userCode', function (newValue) {
+      // console.log('userCode', newValue);
+      $scope.errors = null;
+      var response = MainService.tryParsing(newValue);
+      if (response.type === "success") {
+        $scope.syntaxTree = response.tree;
+        if ($scope.syntaxTree) {
+          $scope.blacklistMessages = MainService.checkForDisallowed($scope.syntaxTree, $scope.blacklist, $scope.blacklistMessages);
+        }
+      } else if (response.type === "error") {
+        $scope.errors = response.error;
+      }
+    });
+
+    $scope.$watch('ifNotAllowed', function (newValue) {
+      if (newValue) {
+        $scope.blacklist.push('IfStatement');
+      } else if (!newValue && $scope.blacklist.length > 0){
+        $scope.blacklist = _.remove($scope.blacklist, "IfStatement");
+      }
+    });
+  }]);
+
+angular.module('challenge.services', [
+
+])
+  .service('MainService', function () {
+    this.checkForDisallowed = function (syntaxTree, blacklist, messages) {
       var flatTree = _.flatMapDeep(syntaxTree);
       _.each(blacklist, function (disallowed) {
         var results = _.filter(flatTree, { type: disallowed });
@@ -36,29 +63,16 @@ angular.module('challenge.controllers', [
       return messages;
     };
 
-    function tryParsing (text) {
-      $scope.errors = null;
+    this.tryParsing = function (text) {
+      var response = {};
       try {
-        return esprima.parse(text, { tolerant: true });
+        response.type = "success";
+        response.tree = esprima.parse(text, { tolerant: true });
       } catch (e) {
-        $scope.errors = e.description;
+        response.type = "error";
+        response.error = e.description;
         // console.log(e);
       }
+      return response;
     };
-
-    $scope.$watch('userCode', function (newValue) {
-      // console.log('userCode', newValue);
-      $scope.syntaxTree = tryParsing(newValue);
-      if ($scope.syntaxTree) {
-        $scope.blacklistMessages = checkForDisallowed($scope.syntaxTree, $scope.blacklist, $scope.blacklistMessages);
-      }
-    });
-
-    $scope.$watch('ifNotAllowed', function (newValue) {
-      if (newValue) {
-        $scope.blacklist.push('IfStatement');
-      } else if (!newValue && $scope.blacklist.length > 0){
-        $scope.blacklist = _.remove($scope.blacklist, "IfStatement");
-      }
-    });
-  }]);
+  });

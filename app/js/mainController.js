@@ -20,7 +20,22 @@ angular.module('challenge.controllers', [
 
     // When the blacklist has been updated, reparse the user's code
     $scope.$on('blacklistUpdated', function () {
+      console.log('black updated event received');
       updateParsing($scope.userCode);
+    });
+
+    $scope.$watch('blacklistedItems', function (newValue) {
+      if (newValue) {
+        if (newValue.indexOf(',') < 0) {
+          $scope.blacklist.push(newValue);
+        } else {
+          $scope.blacklist = _.split(newValue, ',');
+        }
+        // console.log('statements', statements);
+      } else {
+        $scope.blacklist = [];
+      }
+      $scope.$emit('blacklistUpdated');
     });
 
     $scope.$watch('ifNotAllowed', function (newValue) {
@@ -39,6 +54,7 @@ angular.module('challenge.controllers', [
     function updateParsing(newValue) {
       $scope.errors = null;
       var response = MainService.tryParsing(newValue);
+      console.log('response', response);
       if (response.type === "success") {
         $scope.syntaxTree = response.tree;
         if ($scope.syntaxTree) {
@@ -47,5 +63,6 @@ angular.module('challenge.controllers', [
       } else if (response.type === "error") {
         $scope.errors = response.error;
       }
+      console.log('$scope.blacklistMessages', $scope.blacklistMessages);
     };
   }]);

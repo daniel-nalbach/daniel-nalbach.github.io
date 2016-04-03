@@ -5,10 +5,13 @@ angular.module('challenge.services', [
 
 ])
   .service('MainService', function () {
+    var MainService = this;
+
     this.checkForDisallowed = function (syntaxTree, blacklist, messages) {
       var flatTree = _.flatMapDeep(syntaxTree);
       if (blacklist.length && blacklist.length > 0) {
         _.each(blacklist, function (disallowed) {
+          disallowed = MainService.getDisallowedTranslation(disallowed);
           var results = _.filter(flatTree, { type: disallowed });
           var alreadyHasMessage = _.filter(messages, { type: disallowed }).length > 0;
           if (results.length > 0 && !alreadyHasMessage) {
@@ -21,6 +24,24 @@ angular.module('challenge.services', [
         messages = [];
       }
       return messages;
+    };
+
+    this.dictionary = {
+      "if" : "IfStatement",
+      "for" : "ForStatement"
+    };
+
+    this.getDisallowedTranslation = function (statement) {
+      statement = _.trim(statement);
+      var matches = _.filter(this.dictionary, function (value, key) {
+        console.log('key, statement', key, statement);
+        if (key == statement) {
+          console.log('key matched statement');
+          return true;
+        }
+      });
+      console.log('matches', matches);
+      return matches ? matches[0] : statement;
     };
 
     this.tryParsing = function (text) {

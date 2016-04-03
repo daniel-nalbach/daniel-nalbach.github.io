@@ -29,8 +29,14 @@ body {
   width: 600px;
 }
 
+.main .blacklist-input {
+  height: 80px;
+}
+
 .feedback {
+  margin: auto;
   margin-bottom: 20px;
+  width: 620px;
 }
 
 .feedback .codeObject, .blacklist-error {
@@ -61,4 +67,5 @@ body {
 
 .blacklist-error {
   background-color: red;
+  display: block;
 }

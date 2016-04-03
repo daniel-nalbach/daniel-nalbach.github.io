@@ -22,8 +22,10 @@
   <div class="main">
     <div>
       <h3>Settings</h3>
-      <input type="checkbox" value="false" ng-model="ifNotAllowed">
-      <label>If statements not allowed</label>
+      <!-- <input type="checkbox" value="false" ng-model="ifNotAllowed">
+      <label>If statements not allowed</label> -->
+      <label>Enter blacklisted statements, separated by commas</label>
+      <textarea class="blacklist-input" ng-model="blacklistedItems" ng-model-options="{debounce: 500}" placeholder="Example: if, for, while"></textarea>
     </div>
     <h3>Input Code</h3>
     <textarea ng-model="userCode" ng-model-options="{debounce: 2000}"></textarea>

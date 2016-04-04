@@ -1,18 +1,28 @@
 body {
+  color: #555;
   font-family: 'Arial';
   margin: 0;
   padding: 0;
 }
 
+h3 {
+  color: #1976D2;
+}
+
+input, textarea {
+  border-color: #B6B6B6;
+}
+
 .header {
-  background-color: #7CD0F7;
-  padding: 20px;
+  background-color: #1976D2;
+  padding: 20px 0;
   text-align: center;
   width: 100%;
 }
 
 .header h1 {
   color: #fff;
+  display: inline-block;
   margin: auto;
 }
 
@@ -30,7 +40,7 @@ body {
 }
 
 .main .blacklist-input {
-  height: 80px;
+  height: 60px;
 }
 
 .feedback {

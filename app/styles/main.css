@@ -8,6 +8,7 @@
 .primary-text-color    { color: #212121; }
 .secondary-text-color  { color: #727272; }
 .divider-color         { border-color: #B6B6B6; }
+.green                 { background: #388E3C; }
 
 body {
   color: #555;
@@ -55,8 +56,8 @@ input, textarea {
   width: 600px;
 }
 
-.main .blacklist-input {
-  height: 60px;
+.main .blacklist-input, .main .whitelist-input {
+  height: 40px;
 }
 
 .feedback {
@@ -65,7 +66,7 @@ input, textarea {
   width: 620px;
 }
 
-.feedback .codeObject, .blacklist-error {
+.feedback .codeObject, .blacklist-error, .whitelist-message {
   border-radius: 10px;
   color: white;
   display: inline-block;
@@ -93,5 +94,10 @@ input, textarea {
 
 .blacklist-error {
   background-color: #FF5722;
+  display: block;
+}
+
+.whitelist-message {
+  background-color: #388E3C;
   display: block;
 }

@@ -11,6 +11,8 @@ angular.module('challenge.controllers', [
     $scope.ifStatements = null;
     $scope.blacklist = [];
     $scope.blacklistMessages = [];
+    $scope.whitelist = [];
+    $scope.whitelistMessages = [];
 
     // When the user's code changes, reparse it
     $scope.$watch('userCode', function (newValue) {
@@ -21,6 +23,11 @@ angular.module('challenge.controllers', [
     // When the blacklist has been updated, reparse the user's code
     $scope.$on('blacklistUpdated', function () {
       console.log('black updated event received');
+      updateParsing($scope.userCode);
+    });
+    // When the whitelist has been updated, reparse the user's code
+    $scope.$on('whitelistUpdated', function () {
+      console.log('white updated event received');
       updateParsing($scope.userCode);
     });
 
@@ -38,15 +45,18 @@ angular.module('challenge.controllers', [
       $scope.$emit('blacklistUpdated');
     });
 
-    $scope.$watch('ifNotAllowed', function (newValue) {
+    $scope.$watch('whitelistedItems', function (newValue) {
       if (newValue) {
-        $scope.blacklist.push('IfStatement');
-      } else if (!newValue && $scope.blacklist.length > 0){
-        $scope.blacklist = _.remove($scope.blacklist, "IfStatement");
+        if (newValue.indexOf(',') < 0) {
+          $scope.whitelist.push(newValue);
+        } else {
+          $scope.whitelist = _.split(newValue, ',');
+        }
+        // console.log('statements', statements);
+      } else {
+        $scope.whitelist = [];
       }
-      // Send an event so that the user's code can be reparsed with the
-      // updated blacklist.
-      $scope.$emit('blacklistUpdated');
+      $scope.$emit('whitelistUpdated');
     });
 
     // This is the process of updating the scope with the
@@ -59,10 +69,12 @@ angular.module('challenge.controllers', [
         $scope.syntaxTree = response.tree;
         if ($scope.syntaxTree) {
           $scope.blacklistMessages = MainService.checkForDisallowed($scope.syntaxTree, $scope.blacklist, $scope.blacklistMessages);
+          $scope.whitelistMessages = MainService.checkForRequired($scope.syntaxTree, $scope.whitelist, $scope.whitelistMessages);
         }
       } else if (response.type === "error") {
         $scope.errors = response.error;
       }
       console.log('$scope.blacklistMessages', $scope.blacklistMessages);
+      console.log('$scope.whitelistMessages', $scope.whitelistMessages);
     };
   }]);

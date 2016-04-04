@@ -27,8 +27,13 @@ angular.module('challenge.services', [
     };
 
     this.dictionary = {
+      "expression" : "ExpressionStatement",
+      "for" : "ForStatement",
+      "forin" : "ForInStatement",
+      "function" : "FunctionStatement",
       "if" : "IfStatement",
-      "for" : "ForStatement"
+      "var" : "VariableDeclaration",
+      "while" : "WhileStatement"
     };
 
     this.getDisallowedTranslation = function (statement) {

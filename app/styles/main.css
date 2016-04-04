@@ -22,6 +22,7 @@ h3 {
 
 input, textarea {
   border-color: #B6B6B6;
+  outline: none;
 }
 
 .blacklisted {

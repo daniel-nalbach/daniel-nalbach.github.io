@@ -31,7 +31,7 @@
       <textarea class="blacklist-input" ng-model="blacklistedItems" ng-model-options="{debounce: 500}" placeholder="Example: if, for, while"></textarea>
     </div>
     <h3>Input Code</h3>
-    <textarea ng-model="userCode" ng-model-options="{debounce: 2000}" ng-class="{blacklisted: blacklistedItems.length > 0}"></textarea>
+    <textarea ng-model="userCode" ng-model-options="{debounce: 2000}" ng-class="{blacklisted: blacklistMessages.length > 0}"></textarea>
     <div class="feedback">
       <div ng-show="errors" class="errors">{{errors}}</div>
       <div ng-show="blacklistMessages.length > 0" class="blacklist-error" ng-repeat="message in blacklistMessages">{{message.text}}</div>

@@ -66,38 +66,18 @@ input, textarea {
   width: 620px;
 }
 
-.feedback .codeObject, .blacklist-error, .whitelist-message {
+.blacklist-error, .whitelist-message, .shared-item-message {
   border-radius: 10px;
   color: white;
-  display: inline-block;
+  display: block;
   padding: 5px 10px;
   margin: 10px;
 }
 
-.feedback .validObject {
-  background-color: green;
-}
-
-.feedback .invalidObject {
-  background-color: red;
-}
-
-.feedback .validObject .name {
-  background-color: white;
-  border-radius: 10px;
-  padding: 2px 8px;
-}
-
-.feedback .validObject .name {
-  color: green;
-}
-
-.blacklist-error {
+.blacklist-error, .shared-item-message {
   background-color: #FF5722;
-  display: block;
 }
 
 .whitelist-message {
   background-color: #388E3C;
-  display: block;
 }

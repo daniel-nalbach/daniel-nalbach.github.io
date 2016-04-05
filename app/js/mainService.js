@@ -55,17 +55,43 @@ angular.module('challenge.services', [
       "while" : "WhileStatement"
     };
 
+    this.getSharedItems = function (list1, list2) {
+      // console.log('list1', list1, ' | list2', list2);
+      var sharedItems = [];
+      _.each(list1, function (firstListItem) {
+        // console.log('firstListItem', firstListItem);
+        var result = _.filter(list2, function (secondListItem) {
+          if (firstListItem === secondListItem) { return true; }
+        });
+        // console.log('result', result);
+        // console.log(result.length > 0);
+        if (result.length > 0) {
+          sharedItems.push(firstListItem);
+        }
+      });
+      // console.log('sharedItems', sharedItems);
+      return sharedItems;
+    };
+
     this.getStatementTranslation = function (statement) {
       statement = _.trim(statement);
       var matches = _.filter(this.dictionary, function (value, key) {
-        console.log('key, statement', key, statement);
+        // console.log('key, statement', key, statement);
         if (key == statement) {
-          console.log('key matched statement');
+          // console.log('key matched statement');
           return true;
         }
       });
-      console.log('matches', matches);
+      // console.log('matches', matches);
       return matches ? matches[0] : statement;
+    };
+
+    this.removeArrayWhitespace = function (arr) {
+      var newArray = [];
+      _.each(arr, function(item) {
+        newArray.push(_.trim(item));
+      });
+      return newArray;
     };
 
     this.tryParsing = function (text) {

@@ -38,8 +38,8 @@
       <div ng-show="errors" class="errors">{{errors}}</div>
       <div ng-show="blacklistMessages.length > 0" class="blacklist-error" ng-repeat="message in blacklistMessages">{{message.text}}</div>
       <div ng-show="whitelistMessages.length > 0" class="whitelist-message" ng-repeat="message in whitelistMessages">{{message.text}}</div>
+      <div ng-show="sharedItems.length > 0" class="shared-item-message" ng-repeat="item in sharedItems">Settings Error: The same statement ({{item}}) is both required and not permitted.</div>
     </div>
-    <div class="syntaxTree">{{syntaxTree}}</div>
   </div>
 </body>
 </html>

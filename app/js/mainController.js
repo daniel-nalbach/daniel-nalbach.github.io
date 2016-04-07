@@ -55,16 +55,24 @@ angular.module('challenge.controllers', [
     });
 
     $scope.$watch('blacklistedItems', function (newValue, oldValue) {
-      if (newValue !== oldValue) {
+      if (newValue && newValue !== oldValue) {
         MainService.updateBlacklist(newValue);
         MainService.updateParsing($scope.userCode);
+      } else if (!newValue || newValue === "") {
+        MainService.checkedBlacklistStructures = [];
+        MainService.structuredBlacklist = [];
+        MainService.blacklistMessages = [];
       }
     });
 
     $scope.$watch('whitelistedItems', function (newValue, oldValue) {
-      if (newValue !== oldValue) {
+      if (newValue && newValue !== oldValue) {
         MainService.updateWhitelist(newValue);
         MainService.updateParsing($scope.userCode);
+      } else if (!newValue || newValue === "") {
+        MainService.checkedWhitelistStructures = [];
+        MainService.structuredWhitelist = [];
+        MainService.whitelistMessages = [];
       }
     });
 

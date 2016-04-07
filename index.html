@@ -1,8 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="challenge">
+<html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <!--[if lt IE 9]>
+    <script   src="https://code.jquery.com/jquery-1.12.3.min.js"   integrity="sha256-aaODHAgvwQW1bFOGXMeX+pC4PZIPsvn2h1sArYOhgXQ="   crossorigin="anonymous"></script>
+  <![endif]-->
   <title>Challenge App</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,7 +21,7 @@
   <script src="app/js/mainController.js"></script>
   <script src="app/js/mainService.js"></script>
 </head>
-<body ng-controller="MainController">
+<body id="ng-app" ng-app="challenge" ng-controller="MainController">
   <div class="header">
     <h1>Challenge App</h1>
   </div>

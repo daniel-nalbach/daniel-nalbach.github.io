@@ -25,3 +25,4 @@ There was not enough time in the project to perform the UI interactivity that I 
    - Lodash also needs to be dropped to a lower version.
  - White and black listed statements are not currently found inside other statement blocks, only at the top level.
    - Recursive tree parsing will resolve this in a future release.
+ - Next release to contain a dictionary for user-facing terminology instead of syntax tree names

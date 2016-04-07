@@ -192,12 +192,16 @@ angular.module('challenge.services', [
             this.blacklistMessages = this.checkForDisallowed(this.syntaxTree, this.blacklist, this.blacklistMessages);
             this.whitelistMessages = this.checkForRequired(this.syntaxTree, this.whitelist, this.whitelistMessages);
             var validatedStructures = [];
-            _.each(this.structuredWhitelist, function (statement) {
-              var parsed = this.parseStructure(statement);
-              var result = this.checkForNested(this.tree, parsed.parent, parsed.child);
-              console.log('updateParsing - result', result);
-              if (result) { this.checkedWhitelistStructures.push(result); }
-            });
+            console.log('this.structuredWhitelist', this.structuredWhitelist);
+            if (this.structuredWhitelist.length > 0) {
+              _.each(this.structuredWhitelist, function (statement) {
+                console.log('this.structuredWhitelist - statement', statement);
+                var parsed = MainService.parseStructure(statement);
+                var result = MainService.checkForNested(MainService.syntaxTree, parsed.parent, parsed.child);
+                console.log('updateParsing - result', result);
+                if (result) { MainService.checkedWhitelistStructures.push(result); }
+              });
+            }
           }
         } else if (response.type === "error") {
           this.errors = response.error;

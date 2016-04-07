@@ -40,7 +40,6 @@ angular.module('challenge.services', [
       if (!parent || !child) { return null; }
       parent = this.getStatementTranslation(parent);
       child = this.getStatementTranslation(child);
-      console.log('checkForNested - parent, child', parent, child);
       var matchingParents = _.filter(syntaxTree.body, {type: parent});
       var matchingChildren = null;
       var structureFound = false;
@@ -53,12 +52,10 @@ angular.module('challenge.services', [
           matchingResult = result;
         }
       });
-      console.log('matchingResult', matchingResult);
       return matchingResult;
     };
 
     this.checkForRequired = function (syntaxTree, whitelist, messages) {
-      // console.log('whitelist, messages', whitelist, messages);
       var flatTree = _.flatMapDeep(syntaxTree);
       if (whitelist.length && whitelist.length > 0) {
         _.each(whitelist, function (required) {
@@ -78,10 +75,8 @@ angular.module('challenge.services', [
     this.checkForStructure = function (listToCheck, syntaxTree, listToPush) {
       if (listToCheck.length > 0) {
         _.each(listToCheck, function (statement) {
-          console.log('this.structuredWhitelist - statement', statement);
           var parsed = MainService.parseStructure(statement);
           var result = MainService.checkForNested(syntaxTree, parsed.parent, parsed.child);
-          console.log('updateParsing - result', result);
           if (result) { listToPush.push(result); }
         });
       }
@@ -115,33 +110,25 @@ angular.module('challenge.services', [
     }
 
     this.getSharedItems = function (list1, list2) {
-      // console.log('list1', list1, ' | list2', list2);
       var sharedItems = [];
       _.each(list1, function (firstListItem) {
-        // console.log('firstListItem', firstListItem);
         var result = _.filter(list2, function (secondListItem) {
           if (firstListItem === secondListItem) { return true; }
         });
-        // console.log('result', result);
-        // console.log(result.length > 0);
         if (result.length > 0) {
           sharedItems.push(firstListItem);
         }
       });
-      // console.log('sharedItems', sharedItems);
       return sharedItems;
     };
 
     this.getStatementTranslation = function (statement) {
       statement = _.trim(statement);
       var matches = _.filter(this.dictionary, function (value, key) {
-        // console.log('key, statement', key, statement);
         if (key == statement) {
-          // console.log('key matched statement');
           return true;
         }
       });
-      // console.log('matches', matches);
       return matches ? matches[0] : statement;
     };
 
@@ -172,7 +159,6 @@ angular.module('challenge.services', [
       } catch (e) {
         response.type = "error";
         response.error = e.description;
-        // console.log(e);
       }
       return response;
     };
@@ -208,7 +194,6 @@ angular.module('challenge.services', [
 
             this.checkForStructure(this.structuredBlacklist, this.syntaxTree, this.checkedBlacklistStructures);
             this.checkForStructure(this.structuredWhitelist, this.syntaxTree, this.checkedWhitelistStructures);
-            console.log('this.checkedBlacklistStructures', this.checkedBlacklistStructures);
           }
         } else if (response.type === "error") {
           this.errors = response.error;

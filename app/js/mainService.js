@@ -27,8 +27,6 @@ angular.module('challenge.services', [
           var alreadyHasMessage = _.filter(messages, { type: disallowed }).length > 0;
           if (results.length > 0 && !alreadyHasMessage) {
             messages.push({ type: disallowed, text: "This exercise requires that you do not use " + disallowed });
-          } else if  (!results.length && alreadyHasMessage) {
-            messages = _.reject(messages, { type: disallowed });
           }
         });
       } else {
@@ -68,8 +66,6 @@ angular.module('challenge.services', [
           var alreadyHasMessage = _.filter(messages, { type: required }).length > 0;
           if (results.length > 0 && !alreadyHasMessage) {
             messages.push({ type: required, text: "You have met the exercise requirement to use " + required });
-          } else if  (!results.length && alreadyHasMessage) {
-            messages = _.reject(messages, { type: required });
           }
         });
       } else {
@@ -183,8 +179,11 @@ angular.module('challenge.services', [
     };
 
     this.updateParsing = function (newValue) {
-      this.errors = null;
+      this.blacklistMessages = [];
       this.checkedWhitelistStructures = [];
+      this.errors = null;
+      this.whitelistMessages = [];
+
       if (this.sharedItems.length < 1) {
         var response = this.tryParsing(newValue);
         if (response.type === "success") {

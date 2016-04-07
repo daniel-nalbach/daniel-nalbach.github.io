@@ -50,26 +50,17 @@ angular.module('challenge.controllers', [
       MainService.updateParsing(newValue);
     });
 
-    // When the blacklist has been updated, reparse the user's code
-    $scope.$on('blacklistUpdated', function () {
-      MainService.updateParsing($scope.userCode);
-    });
-    // When the whitelist has been updated, reparse the user's code
-    $scope.$on('whitelistUpdated', function () {
-      MainService.updateParsing($scope.userCode);
-    });
-
     $scope.$watch('blacklistedItems', function (newValue, oldValue) {
       if (newValue !== oldValue) {
         MainService.updateBlacklist(newValue);
-        $scope.$emit('blacklistUpdated');
+        MainService.updateParsing($scope.userCode);
       }
     });
 
     $scope.$watch('whitelistedItems', function (newValue, oldValue) {
       if (newValue !== oldValue) {
         MainService.updateWhitelist(newValue);
-        $scope.$emit('whitelistUpdated');
+        MainService.updateParsing($scope.userCode);
       }
     });
 

@@ -7,13 +7,13 @@
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="styles/main.css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-  <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.7.0/lodash.js"></script> -->
-  <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular.js"></script> -->
-  <!-- <script src="//cdn.rawgit.com/jquery/esprima/2.7.2/esprima.js"></script> -->
-  <script src="js/lodash.js"></script>
+  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"> -->
+  <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.7.0/lodash.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular.js"></script>
+  <script src="//cdn.rawgit.com/jquery/esprima/2.7.2/esprima.js"></script>
+  <!--<script src="js/lodash.js"></script>
   <script src="js/angular.js"></script>
-  <script src="js/esprima.js"></script>
+  <script src="js/esprima.js"></script>-->
   <script src="js/app.js"></script>
   <script src="js/mainController.js"></script>
   <script src="js/mainService.js"></script>
@@ -23,16 +23,19 @@
     <h1>Challenge App</h1>
   </div>
   <div class="main">
-    <h3>Settings</h3>
-    <div>
-      <label>Enter blacklisted statements, separated by commas</label>
+    <h3>Instructions</h3>
+    <p>Use the settings boxes below to test the code by providing an individual item or comma separated list. The settings will be automatically parsed and checked against the code using Angular's watch cycle.</p>
+    <p>Supported items are: if, for, forin, function, var, while.</p>
+    <p>Structure is indicated with parent, thin arrow, then child: example "if -> var"
+    <div class="settings-section">
+      <h4>Blacklist</h4>
       <textarea class="blacklist-input" ng-model="blacklistedItems" ng-model-options="{debounce: 500}" placeholder="Example: if, for, while"></textarea>
     </div>
-    <div>
-      <label>Enter whitelisted statements, separated by commas</label>
+    <div class="settings-section">
+      <h4>Whitelist</h4>
       <textarea class="whitelist-input" ng-model="whitelistedItems" ng-model-options="{debounce: 500}" placeholder="Example: if, for, while"></textarea>
     </div>
-    <h3>Input Code</h3>
+    <p>Enter the code to test here. Messages will show underneath indicating results.</p>
     <textarea ng-model="userCode" ng-model-options="{debounce: 1000}" ng-class="{blacklisted: blacklistMessages.length > 0}"></textarea>
     <div class="feedback">
       <div ng-show="errors" class="errors">{{errors}}</div>

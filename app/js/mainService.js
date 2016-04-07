@@ -166,6 +166,8 @@ angular.module('challenge.services', [
     this.updateBlacklist = function (newValue) {
       this.blacklist = [];
       this.sharedItems = [];
+      this.structuredBlacklist = [];
+
       if (newValue) {
         if (newValue.indexOf(',') < 0) {
           this.blacklist.push(newValue);
@@ -183,7 +185,7 @@ angular.module('challenge.services', [
       this.checkedWhitelistStructures = [];
       this.errors = null;
       this.whitelistMessages = [];
-
+      
       if (this.sharedItems.length < 1) {
         var response = this.tryParsing(newValue);
         if (response.type === "success") {
@@ -202,8 +204,10 @@ angular.module('challenge.services', [
     };
 
     this.updateWhitelist = function (newValue) {
-      this.whitelist = [];
       this.sharedItems = [];
+      this.structuredWhitelist = [];
+      this.whitelist = [];
+
       if (newValue) {
         if (newValue.indexOf(',') < 0) {
           this.whitelist.push(newValue);

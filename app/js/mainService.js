@@ -26,7 +26,46 @@ angular.module('challenge.services', [
       return messages;
     };
 
+    this.checkForNested = function (syntaxTree, parent, child) {
+      if (!parent || !child) { return null; }
+      parent = this.getStatementTranslation(parent);
+      child = this.getStatementTranslation(child);
+      console.log('checkForNested - parent, child', parent, child);
+      var matchingParents = _.filter(syntaxTree.body, {type: parent});
+      var matchingChildren = null;
+      var structureFound = false;
+      var matchingResult = null;
+
+      _.each(matchingParents, function (matchingParent) {
+        var result = MainService.findFirstChildInParents(matchingParent, child);
+        if (result.structureFound) {
+          result.parent = parent;
+          matchingResult = result;
+        }
+      });
+      console.log('matchingResult', matchingResult);
+      return matchingResult;
+    };
+
+    this.findFirstChildInParents = function (parent, child) {
+      var found = false;
+      // Functions have a body/body structure
+      if (parent && parent.body && parent.body.body) {
+        if (_.filter(parent.body.body, {type: child})) {
+          found = true;
+        }
+        return { child: child, structureFound: found };
+      // IfStatements have a consequent/body
+    } else if (parent && parent.consequent && parent.consequent.body) {
+        if (_.filter(parent.consequent.body, {type: child})) {
+          found = true;
+        }
+        return { child: child, structureFound: found };
+      }
+    }
+
     this.checkForRequired = function (syntaxTree, whitelist, messages) {
+      // console.log('whitelist, messages', whitelist, messages);
       var flatTree = _.flatMapDeep(syntaxTree);
       if (whitelist.length && whitelist.length > 0) {
         _.each(whitelist, function (required) {
@@ -49,7 +88,7 @@ angular.module('challenge.services', [
       "expression" : "ExpressionStatement",
       "for" : "ForStatement",
       "forin" : "ForInStatement",
-      "function" : "FunctionStatement",
+      "function" : "FunctionDeclaration",
       "if" : "IfStatement",
       "var" : "VariableDeclaration",
       "while" : "WhileStatement"
@@ -84,6 +123,17 @@ angular.module('challenge.services', [
       });
       // console.log('matches', matches);
       return matches ? matches[0] : statement;
+    };
+
+    this.getStructuredStatementList = function (inputArray) {
+      return _.filter(inputArray, function (statement) {
+        if (statement.indexOf('->') > -1) { return true; }
+      });
+    };
+
+    this.parseStructure = function (statement) {
+      var pieces = _.split(statement, '->');
+      return { parent: pieces[0], child: pieces[1] };
     };
 
     this.removeArrayWhitespace = function (arr) {

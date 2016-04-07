@@ -13,6 +13,7 @@ angular.module('challenge.controllers', [
     $scope.blacklistMessages = [];
     $scope.whitelist = [];
     $scope.whitelistMessages = [];
+    $scope.checkedWhitelistStructures = [];
 
     // When the user's code changes, reparse it
     $scope.$watch('userCode', function (newValue) {
@@ -59,6 +60,7 @@ angular.module('challenge.controllers', [
             $scope.whitelist = MainService.removeArrayWhitespace(_.split(newValue, ','));
           }
           // console.log('whitelist', $scope.whitelist);
+          $scope.structuredWhitelist = MainService.getStructuredStatementList($scope.whitelist);
           $scope.sharedItems = MainService.getSharedItems($scope.whitelist, $scope.blacklist);
           // console.log('sharedItems', $scope.sharedItems);
         }
@@ -70,6 +72,7 @@ angular.module('challenge.controllers', [
     // parsing and appropriate messages.
     function updateParsing(newValue) {
       $scope.errors = null;
+      $scope.checkedWhitelistStructures = [];
       if ($scope.sharedItems.length < 1) {
         var response = MainService.tryParsing(newValue);
         if (response.type === "success") {
@@ -77,6 +80,15 @@ angular.module('challenge.controllers', [
           if ($scope.syntaxTree) {
             $scope.blacklistMessages = MainService.checkForDisallowed($scope.syntaxTree, $scope.blacklist, $scope.blacklistMessages);
             $scope.whitelistMessages = MainService.checkForRequired($scope.syntaxTree, $scope.whitelist, $scope.whitelistMessages);
+            // console.log('$scope.whitelistMessages', $scope.whitelistMessages);
+            var validatedStructures = [];
+            _.each($scope.structuredWhitelist, function (statement) {
+              var parsed = MainService.parseStructure(statement);
+              var result = MainService.checkForNested(response.tree, parsed.parent, parsed.child);
+              console.log('updateParsing - result', result);
+              if (result) { $scope.checkedWhitelistStructures.push(result); }
+            });
+            // console.log('validatedStructures', validatedStructures);
           }
         } else if (response.type === "error") {
           $scope.errors = response.error;

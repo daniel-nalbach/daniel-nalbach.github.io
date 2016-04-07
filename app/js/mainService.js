@@ -9,6 +9,7 @@ angular.module('challenge.services', [
 
     this.blacklist = [];
     this.blacklistMessages = [];
+    this.checkedBlacklistStructures = [];
     this.checkedWhitelistStructures = [];
     this.errors = [];
     this.sharedItems = [];
@@ -72,6 +73,18 @@ angular.module('challenge.services', [
         messages = [];
       }
       return messages;
+    };
+
+    this.checkForStructure = function (listToCheck, syntaxTree, listToPush) {
+      if (listToCheck.length > 0) {
+        _.each(listToCheck, function (statement) {
+          console.log('this.structuredWhitelist - statement', statement);
+          var parsed = MainService.parseStructure(statement);
+          var result = MainService.checkForNested(syntaxTree, parsed.parent, parsed.child);
+          console.log('updateParsing - result', result);
+          if (result) { listToPush.push(result); }
+        });
+      }
     };
 
     this.dictionary = {
@@ -180,6 +193,7 @@ angular.module('challenge.services', [
 
     this.updateParsing = function (newValue) {
       this.blacklistMessages = [];
+      this.checkedBlacklistStructures = [];
       this.checkedWhitelistStructures = [];
       this.errors = null;
       this.whitelistMessages = [];
@@ -191,17 +205,10 @@ angular.module('challenge.services', [
           if (this.syntaxTree) {
             this.blacklistMessages = this.checkForDisallowed(this.syntaxTree, this.blacklist, this.blacklistMessages);
             this.whitelistMessages = this.checkForRequired(this.syntaxTree, this.whitelist, this.whitelistMessages);
-            var validatedStructures = [];
-            console.log('this.structuredWhitelist', this.structuredWhitelist);
-            if (this.structuredWhitelist.length > 0) {
-              _.each(this.structuredWhitelist, function (statement) {
-                console.log('this.structuredWhitelist - statement', statement);
-                var parsed = MainService.parseStructure(statement);
-                var result = MainService.checkForNested(MainService.syntaxTree, parsed.parent, parsed.child);
-                console.log('updateParsing - result', result);
-                if (result) { MainService.checkedWhitelistStructures.push(result); }
-              });
-            }
+
+            this.checkForStructure(this.structuredBlacklist, this.syntaxTree, this.checkedBlacklistStructures);
+            this.checkForStructure(this.structuredWhitelist, this.syntaxTree, this.checkedWhitelistStructures);
+            console.log('this.checkedBlacklistStructures', this.checkedBlacklistStructures);
           }
         } else if (response.type === "error") {
           this.errors = response.error;

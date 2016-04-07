@@ -13,6 +13,10 @@ angular.module('challenge.controllers', [
       $scope.blacklistMessages = newValue;
     });
 
+    $scope.$watch(function () { return MainService.checkedBlacklistStructures; }, function (newValue) {
+      $scope.checkedBlacklistStructures = newValue;
+    });
+
     $scope.$watch(function () { return MainService.checkedWhitelistStructures; }, function (newValue) {
       $scope.checkedWhitelistStructures = newValue;
     });

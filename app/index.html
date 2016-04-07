@@ -42,6 +42,7 @@
       <div ng-show="blacklistMessages.length > 0" class="blacklist-error" ng-repeat="message in blacklistMessages">{{message.text}}</div>
       <div ng-show="whitelistMessages.length > 0" class="whitelist-message" ng-repeat="message in whitelistMessages">{{message.text}}</div>
       <div ng-show="sharedItems.length > 0" class="shared-item-message" ng-repeat="item in sharedItems">Settings Error: The same statement ({{item}}) is both required and not permitted.</div>
+      <div ng-show="checkedBlacklistStructures.length > 0 && structure.structureFound" class="blacklist-error" ng-repeat="structure in checkedBlacklistStructures">This exercise requires that you do not use {{structure.child}} inside a {{structure.parent}}.</div>
       <div ng-show="checkedWhitelistStructures.length > 0 && structure.structureFound" class="whitelist-message" ng-repeat="structure in checkedWhitelistStructures">You met the requirement to have a {{structure.child}} inside a {{structure.parent}}.</div>
     </div>
     <!-- <div class="syntaxTree">{{syntaxTree}}</div> -->
